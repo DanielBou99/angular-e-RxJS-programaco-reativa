@@ -1,4 +1,4 @@
-import { Acao } from './modelo/acoes';
+import { Acao, AcoesAPI } from './modelo/acoes';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, tap, pluck } from 'rxjs/operators';
@@ -11,7 +11,7 @@ export class AcoesService {
 
   getAcoes() {
     return this.httpClient
-      .get<any>('http://localhost:3000/acoes')
+      .get<AcoesAPI>('http://localhost:3000/acoes')
       .pipe(
         pluck('payload'),
         map((acoes) =>
