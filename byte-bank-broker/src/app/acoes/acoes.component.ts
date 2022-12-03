@@ -1,7 +1,7 @@
 import { AcoesService } from './acoes.service';
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { tap, switchMap, filter, debounceTime } from 'rxjs/operators';
+import { tap, switchMap, filter, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { merge } from 'rxjs';
 
 const ESPERA_DIGITACAO = 300;
@@ -27,7 +27,11 @@ export class AcoesComponent {
     filter(
       (valorDigitado) => valorDigitado.length >= 3 || !valorDigitado.length
     ),
-    switchMap((valorDigitado) => this.acoesService.getAcoes(valorDigitado))
+    distinctUntilChanged(),
+    switchMap((valorDigitado) => {
+      console.log('requisicao')
+      return this.acoesService.getAcoes(valorDigitado);
+    })
   );
   acoes$ = merge(this.todasAcoes$, this.filtroPeloInput$);
 
